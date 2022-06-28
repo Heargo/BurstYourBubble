@@ -16,7 +16,7 @@ $color_bg:#FFFFFF;
 $color_bg2:#d9d9d9;
 $color_txt:#353535;
 $color_txt2:#284b63;
-$color_callToAction:#3c6e71;
+$color_callToAction:#6C63FF;
 
 $formbgcolor: $grey;
 
@@ -39,6 +39,20 @@ $br-desk-lap-top:only screen and (min-width : 1224px);
 
 /* Large screens ----------- */
 $br-large: only screen and (min-width : 1824px);
+
+@mixin width-over($_min-width) {
+    @media screen and (min-width: $_min-width) {
+        &{ @content; }
+    }
+}
+
+@mixin width-under($_max-width) {
+    @media screen and (max-width: $_max-width) {
+        &{ @content; }
+    }
+}
+
+
 
 //----------------------------------
 //-----------GLOBAL STYLE-----------

@@ -30,7 +30,7 @@ export default {
             })
             //wait 2s before redirecting to the home page
             setTimeout(function(){
-                window.location.href = '/'
+                window.location.href = '/feed'
             },2000)
         }
     }
@@ -50,7 +50,9 @@ export default {
         justify-content: center;
         flex-wrap: wrap;
         min-height: 20vh;
-        max-width: 50vw;
+        width: 100%;
+        max-width: 800px;
+        
         p{
             text-align: center;
             vertical-align: middle;
@@ -79,6 +81,7 @@ export default {
         padding: 0.3rem 0.8rem;
         background-color:$color_callToAction;
         color:$color_bg;
+        margin-top: 2rem;
     }
     //destroy keyframe animation
     @keyframes fadeOut {
