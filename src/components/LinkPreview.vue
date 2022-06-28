@@ -1,11 +1,12 @@
 <template>
-    <div>
+    <div class="container">
         <div v-if="success && !error" class="card">
             <div>
                 <h1>{{title}}</h1>
-                <img :src="image" alt="">
+                <img :src="image" alt="preview">
             </div>
-            <p>{{description}}</p>
+            <!-- <p>{{description}}</p> -->
+            <p>{{source}}</p>
 
         </div>
         <div v-else-if="loading">
@@ -18,6 +19,7 @@
 </template>
 <script>
 import axios from 'axios'
+import { useStore } from '@/stores/store'
 export default {
     name:"LinkPreview",
     props: {
@@ -26,10 +28,17 @@ export default {
             required: true
         }
     },
+    setup() {
+        const store = useStore()
+        return {
+        store,
+        }
+    },
     data(){
         return {
             title: "Titre",
             description: "description",
+            source:"internet",
             image: "",
             url: "",
             loading: false,
@@ -85,6 +94,10 @@ export default {
                 if(meta.getAttribute('property') == "og:image"){
                     this.image = meta.getAttribute('content');
                 }
+                //source
+                if(meta.getAttribute('property') == "og:site_name"){
+                    this.source = meta.getAttribute('content');
+                }
             });
             //get url domain name
             let url = new URL(this.link);
@@ -94,25 +107,35 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+    .container{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
     .card{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        width: 100%;
         max-width: 800px;
         height: auto;
-        background-color:$color_1;
-        color:$color_3;
+        background-color:$color_bg;
+        color:$color_txt;
         border-radius: 20px;
         h1{
             font-size: 1.3rem;
+            text-align: left;
             //font-weight: normal;
         }
         div{
+            width: 100%;
             display: flex;
             flex-direction: row;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center; 
         }
         img{

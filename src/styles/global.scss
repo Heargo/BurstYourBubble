@@ -12,10 +12,11 @@ $orange: #FCA311;
 $dark-blue: #14213D;
 $grey: #E5E5E5;
 
-$color_1:#FFFCF2;
-$color_2:#CCC5B9;
-$color_3:#403D39;
-$color_4:#252422;
+$color_bg:#FFFFFF;
+$color_bg2:#d9d9d9;
+$color_txt:#353535;
+$color_txt2:#284b63;
+$color_callToAction:#3c6e71;
 
 $formbgcolor: $grey;
 
@@ -44,12 +45,18 @@ $br-large: only screen and (min-width : 1824px);
 //----------------------------------
 
 html,body{
-    background-color: $color_1;
+    background-color: $color_bg;
 }
 
 h1{
     font-family: 'Poppins', sans-serif;
 }
-p{
-
-}
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }

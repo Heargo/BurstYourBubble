@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!loading && !error" class="feed">
-            <LinkPreview v-for="link in feed" :key="link" :link="this.$store.state.CORSFIX+link"></LinkPreview>
+            <LinkPreview v-for="link in feed" :key="link" :link="store.CORSFIX+link"></LinkPreview>
         </div>
         <div v-else-if="loading">
             <p>Loading...</p>
@@ -15,6 +15,7 @@
 <script>
 import axios from 'axios'
 import LinkPreview from './LinkPreview.vue'
+import { useStore } from '@/stores/store'
 export default {
     name: "Feed",
     components: {
@@ -24,6 +25,12 @@ export default {
         rssLink: {
             type: String,
             required: true
+        }
+    },
+    setup() {
+        const store = useStore()
+        return {
+        store,
         }
     },
     mounted(){
