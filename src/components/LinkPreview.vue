@@ -1,9 +1,12 @@
 <template>
     <div>
-        <div v-if="success && !error">
-            <h1>{{title}}</h1>
+        <div v-if="success && !error" class="card">
+            <div>
+                <h1>{{title}}</h1>
+                <img :src="image" alt="">
+            </div>
             <p>{{description}}</p>
-            <img :src="image" alt="">
+
         </div>
         <div v-else-if="loading">
             <p>Loading...</p>
@@ -35,6 +38,9 @@ export default {
             success: false,
         }
     },
+    mounted(){
+       this.getLinkPreview(this.link)
+    },
     watch: {
         link: function(newVal){
             this.getLinkPreview(newVal)
@@ -54,11 +60,9 @@ export default {
                 'Content-Type': 'application/json'
             }})
             .then(response => {
-                console.log(response.data);
                 this.parseLinkPreviewData(response.data);
                 this.loading = false;
                 this.success = true;
-                console.log("done");
             })
             .catch(error => {
                 this.loading = false;
@@ -69,11 +73,9 @@ export default {
         parseLinkPreviewData(data){
             // Use a DocumentFragment to store and then mass inject a list of DOM nodes
             let doc = new DOMParser().parseFromString(data, 'text/html');
-            console.log(doc);
             //get og: properties
             let metas = doc.querySelectorAll('meta');
             metas.forEach(meta => {
-                console.log(meta.getAttribute('property'));
                 if(meta.getAttribute('property') == "og:title"){
                     this.title = meta.getAttribute('content');
                 }
@@ -84,11 +86,43 @@ export default {
                     this.image = meta.getAttribute('content');
                 }
             });
-            
+            //get url domain name
+            let url = new URL(this.link);
+            this.url = url.hostname;
         }
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+
+    .card{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        max-width: 800px;
+        height: auto;
+        background-color:$color_1;
+        color:$color_3;
+        border-radius: 20px;
+        h1{
+            font-size: 1.3rem;
+            //font-weight: normal;
+        }
+        div{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center; 
+        }
+        img{
+            width:200px;
+            height:100px;
+            object-fit: cover;
+        }
+        p{
+            font-family: 'Montserrat', sans-serif;
+        }
+    }
     
 </style>

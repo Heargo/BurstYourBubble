@@ -1,6 +1,7 @@
 //Normalize css
 @import "@/styles/normalize.scss";
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
 //-------------------------------
 //-----------VARIABLES-----------
 //-------------------------------
@@ -10,6 +11,11 @@ $white: white;
 $orange: #FCA311;
 $dark-blue: #14213D;
 $grey: #E5E5E5;
+
+$color_1:#FFFCF2;
+$color_2:#CCC5B9;
+$color_3:#403D39;
+$color_4:#252422;
 
 $formbgcolor: $grey;
 
@@ -36,3 +42,14 @@ $br-large: only screen and (min-width : 1824px);
 //----------------------------------
 //-----------GLOBAL STYLE-----------
 //----------------------------------
+
+html,body{
+    background-color: $color_1;
+}
+
+h1{
+    font-family: 'Poppins', sans-serif;
+}
+p{
+
+}

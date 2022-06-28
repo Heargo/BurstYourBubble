@@ -1,19 +1,20 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <input type="text" v-model="link">
-    <LinkPreview :link="link"></LinkPreview>
-  
+    <!-- <LinkPreview link="https://www.ledauphine.com/science-et-technologie/2022/06/09/l-usmb-et-les-centres-culturels-des-savoie-renouvellent-leur-partenariat"></LinkPreview> -->
+    <h1>FEED</h1>
+    <Feed :rssLink="this.$store.state.CORSFIX+'https://www.francetvinfo.fr/societe.rss'"></Feed>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import LinkPreview from '@/components/LinkPreview.vue'
+// import LinkPreview from '@/components/LinkPreview.vue'
+import Feed from '@/components/Feed.vue'
 export default {
   name: 'Home',
   components: {
-    LinkPreview
+    // LinkPreview,
+    Feed
   },
   data() {
     return {
