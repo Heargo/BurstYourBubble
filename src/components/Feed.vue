@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!loading && !error" class="feed">
-            <LinkPreview v-for="link in feed" :key="link" :link="store.CORSFIX+link"></LinkPreview>
+            <LinkPreview v-for="article in feed.slice(0, n)" :key="article" :link="store.CORSFIX+article" :topic="topics[0]"></LinkPreview>
         </div>
         <div v-else-if="loading">
             <p>Loading...</p>
@@ -22,9 +22,14 @@ export default {
         LinkPreview
     },
     props: {
-        rssLink: {
-            type: String,
+        topics: {
+            type: Object,
             required: true
+        },
+        n:{
+            type: Number,
+            required: false,
+            default: -1
         }
     },
     setup() {
@@ -43,6 +48,7 @@ export default {
             error: false,
             errorMessage: "",
             success: false,
+            size: 0,
         }
     },
     methods: {
@@ -54,7 +60,8 @@ export default {
             this.getFeedData();
         },
         getFeedData(){
-            axios.get(this.rssLink,{
+            var rssLink = this.store.getTopic(this.topics[0]);
+            axios.get(rssLink,{
                 headers: {
                 'Content-Type': 'application/json'
             }})
@@ -85,6 +92,12 @@ export default {
                 //add link in feed
                 this.feed.push(link);
                 //console.log("link: ",link);
+            }
+            //set n if not -1
+            if(this.n == -1){
+                this.size = this.feed.length;
+            }else{
+                this.size = this.n;
             }
         },
     }

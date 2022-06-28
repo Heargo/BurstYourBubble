@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 export const useStore = defineStore('main', {
     state: () => {
         return {
-            CORSFIX: 'https://cors-anywhere.herokuapp.com/',
+            CORSFIX: '',//https://cors-anywhere.herokuapp.com/',
             RSSDATABASE:{
                 "Politique": ["https://www.francetvinfo.fr/politique.rss"],
                 "Economie": ["https://www.francetvinfo.fr/economie.rss"],
@@ -42,7 +42,7 @@ export const useStore = defineStore('main', {
                 this.SavedTopics.splice(this.SavedTopics.indexOf(topic),1);
             else
                 this.SavedTopics.push(topic);
-                
+
             //upadate local storage
             localStorage.setItem('SavedTopics', JSON.stringify(this.SavedTopics));
         }

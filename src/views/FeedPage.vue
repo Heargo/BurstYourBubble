@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h1>SOCIETE</h1>
-    <Feed :rssLink="store.CORSFIX+store.getTopic('Societe')"></Feed>
+  <div class="top">
+    <h1>Ma <span>bulle<img class="cross" src="@/assets/svg/cross.svg" alt=""></span></h1>
+    <Feed class="feedContainer" :topics="['Societe']"></Feed>
   </div>
 </template>
 
@@ -31,4 +31,26 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  h1{
+    position:fixed;
+    top:0;
+    z-index: 3;
+    background-color: $color_bg;
+    width:100%;
+    margin:0;
+    padding-top: 1.5rem;
+    padding-bottom: 0.5rem;
+    span{
+      position:relative;
+      img{
+        position: absolute;
+        top:-240px;
+        right:-225px;
+        transform: scale(0.12);
+      }
+    }
+  }
+  .feedContainer{
+    margin-top: 4rem;
+  }
 </style>

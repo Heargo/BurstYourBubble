@@ -1,12 +1,14 @@
 <template>
     <div class="container">
         <div v-if="success && !error" class="card">
-            <div>
-                <h1>{{title}}</h1>
-                <img :src="image" alt="preview">
+            <img :src="image" alt="preview">
+            <div class="content">
+                <div class="label">
+                    <p class="topic">{{topic}}</p>
+                    <p class="source">{{source}}</p>
+                </div>
+                <h3>{{title}}</h3>
             </div>
-            <!-- <p>{{description}}</p> -->
-            <p>{{source}}</p>
 
         </div>
         <div v-else-if="loading">
@@ -24,6 +26,10 @@ export default {
     name:"LinkPreview",
     props: {
         link: {
+            type: String,
+            required: true
+        },
+        topic: {
             type: String,
             required: true
         }
@@ -116,6 +122,8 @@ export default {
         align-items: center;
     }
     .card{
+        position:relative;
+        cursor: pointer;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -126,25 +134,58 @@ export default {
         background-color:$color_bg;
         color:$color_txt;
         border-radius: 20px;
-        h1{
-            font-size: 1.3rem;
-            text-align: left;
-            //font-weight: normal;
-        }
-        div{
-            width: 100%;
+        margin:1rem 0;
+        .content{
+            position: absolute;
+            z-index: 2;
+            bottom: 0;
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             justify-content: space-between;
             align-items: center; 
+            width: 100%;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 1) 100%);
+            color:$white;
+            border-radius: 20px;
+            h3{
+                width: calc(100% - 1.5rem);
+                font-family: 'Poppins', sans-serif;
+                font-size: 1.3rem;
+                text-align: left;
+                margin: 0.5rem 0.8rem;
+            }
+            .label{
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                .source, .topic{
+                    font-weight: bold;
+                    margin:0;
+                    padding: 0.1rem 0.3rem;   
+                }
+                .source{
+                    background-color:$color_bg;
+                    border-top-right-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                }
+                .topic{
+                    color:$color_bg;
+                    background-color:$color_callToAction;
+
+                }
+                
+            }
         }
         img{
-            width:200px;
-            height:100px;
+            width:100%;
+            height:300px;
             object-fit: cover;
+            border-radius: 20px;
         }
         p{
             font-family: 'Montserrat', sans-serif;
+            color:$color_txt;
         }
     }
     
