@@ -28,6 +28,10 @@ export default {
                     e.remove()
                 },800)
             })
+            //wait 2s before redirecting to the home page
+            setTimeout(function(){
+                window.location.href = '/'
+            },2000)
         }
     }
 }
