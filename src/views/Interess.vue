@@ -91,6 +91,7 @@ export default {
         background-color:$color_callToAction;
         color:$color_bg;
         margin-top: 2rem;
+        cursor: pointer;
     }
     //destroy keyframe animation
     @keyframes fadeOut {
