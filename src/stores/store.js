@@ -21,7 +21,8 @@ export const useStore = defineStore('main', {
                 "Religion": [""], //? to find
 
             },
-            SavedTopics:[]
+            //get SavedTopics from local storage
+            SavedTopics: JSON.parse(localStorage.getItem('SavedTopics')) || [],
         }
       },
       actions: {
@@ -41,6 +42,9 @@ export const useStore = defineStore('main', {
                 this.SavedTopics.splice(this.SavedTopics.indexOf(topic),1);
             else
                 this.SavedTopics.push(topic);
+                
+            //upadate local storage
+            localStorage.setItem('SavedTopics', JSON.stringify(this.SavedTopics));
         }
       },
 })

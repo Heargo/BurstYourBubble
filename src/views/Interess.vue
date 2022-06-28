@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <h1>Choisissez vos centre d'intêrets</h1>
+        <img class="interessImg" src="@/assets/svg/undraw_exciting_news_re_y1iw.svg" alt="interess">
         <div class="interess">
             <p v-for="i in store.getTopics()" :key="i" :class="{selected:store.isTopicSaved(i),noselect:true}" @click="store.toggleTopic(i)">{{i}}</p>
         </div>
@@ -29,8 +30,9 @@ export default {
                 },800)
             })
             //wait 2s before redirecting to the home page
+            var router =this.$router;
             setTimeout(function(){
-                window.location.href = '/feed'
+                router.push('/feed')
             },2000)
         }
     }
@@ -42,6 +44,13 @@ export default {
         flex-direction: column;
         align-items: center;
         justify-content: center;
+    }
+    .interessImg{
+        height: 30vh;
+        width: auto;
+        @include width-under(600px){
+            margin-bottom: 1rem;
+        }   
     }
     .interess{
         display: flex;
