@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div v-if="!loading && !error && store.articleFetchedCounter==store.articleToFetch" class="feed">
+        <div v-if="!loading && !error && store.articleFetchedCounter>=store.articleToFetch" class="feed">
             <LinkPreview v-for="article in store.feed" :key="article" :article="article"></LinkPreview>
         </div>
-        <div v-else-if="loading || store.articleFetchedCounter!=store.articleToFetch">
+        <div v-else-if="store.articleFetchedCounter<store.articleToFetch">
             <p>Loading... </p>
         </div>
         <div v-else-if="error">
@@ -21,19 +21,13 @@ export default {
     components: {
         LinkPreview
     },
-    props: {
-        topics: {
-            type: Object,
-            required: true
-        },
-    },
     setup() {
         const store = useStore()
         return {
         store,
         }
     },
-    created(){
+    mounted(){
         //get feed when component is created
         this.getFeed();
     },
@@ -55,13 +49,17 @@ export default {
             this.loading = true;
             this.error = false;
             this.success = false;
+            this.store.feed=[]; 
+            this.store.articleToFetch = 0;
+            this.store.articleFetchedCounter = 0;
             var topicsRequests = [];
             var numArticlePerFlux = 2;
 
             //get all topics urls
-            for(var i = 0; i < this.topics.length; i++){
-                this.store.RSSDATABASE[this.topics[i]].forEach(url => {
-                    topicsRequests.push({request:axios.get(this.store.CORSFIX+url),topic:this.topics[i],url:url});
+            var topics= this.store.getTopicUnsaved();
+            for(var i = 0; i < topics.length; i++){
+                this.store.RSSDATABASE[topics[i]].forEach(url => {
+                    topicsRequests.push({request:axios.get(this.store.CORSFIX+url),topic:topics[i],url:url});
                 });
             }
             

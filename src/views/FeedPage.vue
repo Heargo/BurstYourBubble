@@ -1,7 +1,7 @@
 <template>
   <div class="top">
     <h1>Ma <span>bulle<img class="cross" src="@/assets/svg/cross.svg" alt=""></span></h1>
-    <Feed class="feedContainer" :topics="store.getTopicUnsaved()"></Feed>
+    <Feed class="feedContainer"></Feed>
   </div>
 </template>
 
