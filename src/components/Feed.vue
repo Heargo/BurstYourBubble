@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!loading && !error" class="feed">
-            <LinkPreview v-for="article in feed.slice(0, n)" :key="article" :link="store.CORSFIX+article.link" :topic="article.topic"></LinkPreview>
+            <LinkPreview v-for="article in feed" :key="article" :link="store.CORSFIX+article.link" :topic="article.topic"></LinkPreview>
         </div>
         <div v-else-if="loading">
             <p>Loading...</p>
@@ -26,11 +26,6 @@ export default {
             type: Object,
             required: true
         },
-        n:{
-            type: Number,
-            required: false,
-            default: -1
-        }
     },
     setup() {
         const store = useStore()
@@ -48,7 +43,6 @@ export default {
             error: false,
             errorMessage: "",
             success: false,
-            size: 0,
         }
     },
     methods: {
@@ -61,20 +55,26 @@ export default {
         },
         getFeedData(){
             var topicsRequests = [];
+            //get all topics urls
             for(var i = 0; i < this.topics.length; i++){
                 console.log("topic : "+this.topics[i]);
-                topicsRequests.push(axios.get(this.store.CORSFIX+this.store.RSSDATABASE[this.topics[i]]));
-            }
-            axios.all(topicsRequests,{
+                this.store.RSSDATABASE[this.topics[i]].forEach(url => {
+                    console.log("url : "+url);
+                    topicsRequests.push({request:axios.get(this.store.CORSFIX+url),topic:this.topics[i],url:url});
+                });
+            }        
+            axios.all(topicsRequests.map(function(tr) {return tr.request;}),{
                 headers: {
                 'Content-Type': 'application/json'
             }})
             .then(axios.spread((...responses) => {
-                //console.log(response.data);
                 for(var i = 0; i < responses.length; i++){
                     var response = responses[i];
-                    this.parseFeedData(response.data,3,this.topics[i]);
+                    var topic = topicsRequests[i].topic;
+                    // console.log("Parsing for url: "+topicsRequests[i].url+" the topic is : "+topic);
+                    this.parseFeedData(response.data,3,topic);
                 }
+                // console.log(this.feed)
                 this.loading = false;
                 this.success = true;
             }))
@@ -86,11 +86,13 @@ export default {
         },
         parseFeedData(data,num,topic){
             // Use a DocumentFragment to store and then mass inject a list of DOM nodes
-            let doc = new DOMParser().parseFromString(data, 'text/html');
+            let doc = new DOMParser().parseFromString(data, 'text/xml');
             //get og: properties
             let items = doc.querySelectorAll('item');
+            // console.log("there is "+items.length+" items in the feed");
             //loop through each item and get the link
             for(let i = 0; i < num; i++){
+                // console.log("item : "+i);
                 //link to the article
                 let link = items[i].querySelector('link').textContent;
                 if(!link){
@@ -102,13 +104,6 @@ export default {
                     topic: topic
                 }
                 this.feed.push(article);
-                //console.log("link: ",link);
-            }
-            //set n if not -1
-            if(this.n == -1){
-                this.size = this.feed.length;
-            }else{
-                this.size = this.n;
             }
         },
     }

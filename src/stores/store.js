@@ -7,11 +7,11 @@ export const useStore = defineStore('main', {
         return {
             CORSFIX: '',//https://cors-anywhere.herokuapp.com/',
             RSSDATABASE:{
-                "Politique": ["https://www.francetvinfo.fr/politique.rss"],
-                "Economie": ["https://www.francetvinfo.fr/economie.rss"],
-                "Culture": ["https://www.francetvinfo.fr/culture.rss"],
+                "Politique": ["https://www.francetvinfo.fr/politique.rss","https://www.europe1.fr/rss/politique.xml"],
+                "Economie": ["https://www.francetvinfo.fr/economie.rss","https://www.europe1.fr/rss/economie.xml"],
+                "Culture": ["https://www.francetvinfo.fr/culture.rss","https://www.france24.com/fr/culture/rss"],
                 "Societe": ["https://www.francetvinfo.fr/societe.rss"], 
-                // "Sport": [""],//? to find
+                "Sport": ["https://www.france24.com/fr/sports/rss","https://www.europe1.fr/rss/sport.xml"],
                 // "Cinema": [""],//? to find
                 // "Lifestyle": [""],//? to find
                 // "Actualites": [""],//? to find
