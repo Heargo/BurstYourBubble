@@ -65,7 +65,8 @@ export default {
             }        
             axios.all(topicsRequests.map(function(tr) {return tr.request;}),{
                 headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+
             }})
             .then(axios.spread((...responses) => {
                 for(var i = 0; i < responses.length; i++){

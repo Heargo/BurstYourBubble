@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 export const useStore = defineStore('main', {
     state: () => {
         return {
-            CORSFIX: '',//https://cors-anywhere.herokuapp.com/',
+            CORSFIX: 'https://cors-proxy-heargo.herokuapp.com/',
             RSSDATABASE:{
                 "Politique": ["https://www.francetvinfo.fr/politique.rss","https://www.europe1.fr/rss/politique.xml"],
                 "Economie": ["https://www.francetvinfo.fr/economie.rss","https://www.europe1.fr/rss/economie.xml"],
