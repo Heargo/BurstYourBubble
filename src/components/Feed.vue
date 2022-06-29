@@ -91,12 +91,12 @@ export default {
             let items = doc.querySelectorAll('item');
             //loop through each item and get the link
             for(let i = 0; i < num; i++){
-                //console.log(items[i]);
+                //link to the article
                 let link = items[i].querySelector('link').textContent;
                 if(!link){
                     link = items[i].querySelector('guid').textContent;
                 }
-                //add link in feed
+                //add link anda its related topic in feed
                 var article = {
                     link: link,
                     topic: topic

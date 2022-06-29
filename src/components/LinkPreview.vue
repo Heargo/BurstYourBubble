@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" @click="openArticle(link)">
         <div v-if="success && !error" class="card">
             <img :src="image" alt="preview">
             <div class="content">
@@ -108,6 +108,9 @@ export default {
             //get url domain name
             let url = new URL(this.link);
             this.url = url.hostname;
+        },
+        openArticle(link){
+            window.open(link, '_blank');
         }
     }
 }
