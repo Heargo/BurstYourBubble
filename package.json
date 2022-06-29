@@ -8,12 +8,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "pinia": "^2.0.14",
-    "vue": "^3.2.25",
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
+    "keyword-extractor": "^0.0.23",
+    "pinia": "^2.0.14",
     "pwa": "^1.9.7",
     "sass": "^1.52.1",
+    "vue": "^3.2.25",
     "vue-router": "^4.0.0-0"
   },
   "devDependencies": {

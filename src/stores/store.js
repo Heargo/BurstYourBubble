@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+//  include the Keyword Extractor
+import keyword_extractor from 'keyword-extractor'
 
 // useStore could be anything like useUser, useCart
 // the first argument is a unique id of the store across your application
@@ -31,7 +33,7 @@ export const useStore = defineStore('main', {
             feed: [],
             articleToFetch: 0,
             articleFetchedCounter:0,
-            userProfile: JSON.parse(localStorage.getItem('userProfile')) || {topics:{},keywords:[]},
+            userProfile: JSON.parse(localStorage.getItem('userProfile')) || {topics:{},keywords:{}},
         }
       },
       actions: {
@@ -90,14 +92,14 @@ export const useStore = defineStore('main', {
                 console.log("create new topic interest start");    
                 this.userProfile.topics[article.topic] = 1;
             }
+            //extract keywords from the article
+            this.extractKeywordsAndUpdateScore(article.title);
+            this.extractKeywordsAndUpdateScore(article.description);
 
-            console.log("userProfile",this.userProfile);
 
             //update local storage
-            console.log("userprofile topics ",this.userProfile.topics)
             var stringify = JSON.stringify(this.userProfile);
             localStorage.setItem('userProfile', stringify);
-            console.log("userProfile updated",stringify);
         },
         /**
          * Score the article based on user profile (topics and keywords)
@@ -113,18 +115,39 @@ export const useStore = defineStore('main', {
             //title score
             for(let word of article.title)
             {
-                if(this.userProfile.keywords.includes(word))
-
-                    score += 1;
+                if(Object.keys(this.userProfile.keywords).includes(word))
+                    score += this.userProfile.keywords[word];
             }
             //description score
             for(let word of article.description)
             {
-                if(this.userProfile.keywords.includes(word))
-                    score += 0.5;
+                if(Object.keys(this.userProfile.keywords).includes(word))
+                    score += this.userProfile.keywords[word]*0.5;
             }
 
             return score;
+        },
+        extractKeywordsAndUpdateScore(string)
+        {
+            var keywords = keyword_extractor.extract(string,{
+                language:"french",
+                remove_digits: true,
+                return_changed_case:true,
+                remove_duplicates: false
+            });
+            //remove -, _, . , / , ( , ) , [ , ] , { , }, «, »
+            keywords = keywords.map(keyword => keyword.replace(/[-_.,\/()\[\]{}«»]/g, ""));
+            //remove empty keywords
+            keywords = keywords.filter(keyword => keyword.length>0);
+            //increment score for each keyword if they exist in the user profile else create it
+            keywords.forEach(keyword => {
+                if(Object.keys(this.userProfile.keywords).includes(keyword)){
+                    this.userProfile.keywords[keyword]++;
+                }
+                else{
+                    this.userProfile.keywords[keyword] = 1;
+                }
+            });
         }
       },
 })

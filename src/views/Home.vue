@@ -10,7 +10,7 @@
           <h2>Un algorithme qui vous montre <span>ce que vous n'aimez pas</span></h2>
           <p>Les algorithmes vous proposent du contenu sans cesse toujours adapté à vous goûts.
             De ce fait, vous restez dans votre bulle d'idée et de convictions.
-            Éclate ta bulle à pour objectif de vous proposer du contenu en <strong>excluant</strong> ce que vous aimez afin de vous aider à rester curieux.
+            Éclate ta bulle a pour objectif de vous proposer du contenu en <strong>excluant</strong> ce que vous aimez afin de vous aider à rester curieux.
           </p>
       </div>
     </div>
