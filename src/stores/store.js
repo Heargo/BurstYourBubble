@@ -5,8 +5,8 @@ import { defineStore } from 'pinia'
 export const useStore = defineStore('main', {
     state: () => {
         return {
-            // CORSFIX: 'https://cors-proxy-heargo.herokuapp.com/',
-            CORSFIX: '',
+            CORSFIX: 'https://cors-proxy-heargo.herokuapp.com/',
+            // CORSFIX: '',
             RSSDATABASE:{
                 "Politique": ["https://www.francetvinfo.fr/politique.rss","https://www.europe1.fr/rss/politique.xml","https://www.01net.com/actualites/politique-droits/feed/"],
                 "Economie": ["https://www.francetvinfo.fr/economie.rss","https://www.europe1.fr/rss/economie.xml"],
@@ -28,6 +28,9 @@ export const useStore = defineStore('main', {
             RSSNOCATEGORIES:["https://api.blast-info.fr/rss_articles.xml"],
             //get SavedTopics from local storage
             SavedTopics: JSON.parse(localStorage.getItem('SavedTopics')) || [],
+            feed: [],
+            articleToFetch: 0,
+            articleFetchedCounter:0,
         }
       },
       actions: {
@@ -58,23 +61,46 @@ export const useStore = defineStore('main', {
         {
             return Object.keys(this.RSSDATABASE).filter(topic => !this.isTopicSaved(topic));
         },
-        sortArticles(articles)
+        sortArticles()
         {
+            if(this.articleFetchedCounter==this.articleToFetch)
+            {
+
+                // //delete articles with same title or link
+                // var newArticles = [];
+                // for(var i = 0; i < this.feed.length; i++)
+                // {
+                //     var isDuplicate = false;
+                //     console.log("checking article " + i);
+                //     for(var j = 0; j < newArticles.length; j++)
+                //     {
+                //         if(this.feed[i].title == newArticles[j].title)
+                //         {
+                //             console.log("DUPLICATE",this.feed[i].title,newArticles[j].title);
+                //             isDuplicate++;
+                //             if(duplicate>1){
+                //                 isDuplicate =true;
+                //                 break;
+                //             }
+                //         }
+                //     }
+                //     if(!isDuplicate)
+                //         newArticles.push(this.feed[i]);
+                // }
+                // this.feed = newArticles;
 
 
-            //delete articles with same link/name ?
+                //shuffle articles
+                for (let i = this.feed.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [this.feed[i], this.feed[j]] = [this.feed[j], this.feed[i]];
+                }
 
-            //shuffle articles
-            for (let i = articles.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [articles[i], articles[j]] = [articles[j], articles[i]];
+                //sort by score
+                this.feed = this.feed.sort((a,b) => {
+                    return new Date(b.score) - new Date(a.score);
+                });
             }
-
-            //sort by score
-            articles = articles.sort((a,b) => {
-                return new Date(b.score) - new Date(a.score);
-            });
-            return articles;
 
         }
       },

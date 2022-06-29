@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!loading && !error" class="feed">
-            <LinkPreview v-for="article in feed" :key="article" :article="article"></LinkPreview>
+            <LinkPreview v-for="article in store.feed" :key="article" :article="article"></LinkPreview>
         </div>
         <div v-else-if="loading">
             <p>Loading... </p>
@@ -39,7 +39,6 @@ export default {
     },
     data(){
         return {
-            feed: [],
             loading: false,
             error: false,
             success: false,
@@ -68,6 +67,7 @@ export default {
                 });
             }
             
+            this.store.articleToFetch = topicsRequests.length * numArticlePerFlux;
             //get articles from all topics
             axios.all(topicsRequests.map(function(tr) {return tr.request;}),{
                 headers: {
@@ -83,8 +83,8 @@ export default {
                     this.parseFeedData(response.data,numArticlePerFlux,topic);
                 }
 
-                // this.store.addUncategorizedArticles(this.feed);
-                this.store.sortArticles(this.feed);
+                // // this.store.addUncategorizedArticles(this.feed);
+                // this.store.sortArticles();
 
                 //loading finished and no error
                 this.loading = false;
@@ -134,11 +134,15 @@ export default {
                     var data = response.data;
                     article = this.parseOgData(data,article);
                     //add to feed
-                    this.feed.push(article);
+                    this.store.feed.push(article);
+                    this.store.articleFetchedCounter++;
+                    this.store.sortArticles();
 
                 })
                 .catch(error => {
                     console.log(error);
+                    this.store.articleFetchedCounter++;
+                    this.store.sortArticles();
                 });
                 
             }
