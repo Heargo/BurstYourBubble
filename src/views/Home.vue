@@ -2,7 +2,7 @@
   <div class="home">
     <div class="bubbleRelative">
       <h1>Éclate ta bulle !</h1>
-      <router-link to="interess" class="bubble">ICI</router-link>
+      <button @click="redirect('interess')" class="bubble">ICI</button>
     </div>
     <div class="argument">
       <img src="@/assets/svg/undraw_launching_re_tomg.svg" alt="explore">
@@ -20,12 +20,31 @@
 <script>
 // @ is an alias to /src
 // import LinkPreview from '@/components/LinkPreview.vue'
+import { useStore } from '@/stores/store'
 
 export default {
   name: 'Home',
   data() {
     return {
       link:""
+    }
+  },
+  setup() {
+    const store = useStore()
+    return {
+      store,
+    }
+  },
+  methods: {
+    redirect(route){
+      //if there is no interess saved in store, redirect to interess page
+      if(this.store.getTopics().length==0){
+        this.$router.push(route)
+      }
+      //else redirect to feed page since user already started the app
+      else{
+        this.$router.push('feed')
+      }
     }
   }
 }
@@ -103,9 +122,6 @@ export default {
       justify-content: space-around;
     }
     .bubble{
-      
-
-
       position: absolute;
       border-radius: 50%;
       text-decoration: none;
@@ -113,6 +129,8 @@ export default {
       animation: bubble 10s linear infinite;
       background-color:$color_callToAction;
       color:$color_bg;
+      outline:none;
+      border:none;
 
       @include width-under(600px) {
         position: inherit;

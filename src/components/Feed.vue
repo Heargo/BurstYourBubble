@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="!loading && !error" class="feed">
-            <LinkPreview v-for="article in feed.slice(0, n)" :key="article" :link="store.CORSFIX+article" :topic="topics[0]"></LinkPreview>
+            <LinkPreview v-for="article in feed.slice(0, n)" :key="article" :link="store.CORSFIX+article.link" :topic="article.topic"></LinkPreview>
         </div>
         <div v-else-if="loading">
             <p>Loading...</p>
@@ -60,37 +60,48 @@ export default {
             this.getFeedData();
         },
         getFeedData(){
-            var rssLink = this.store.getTopic(this.topics[0]);
-            axios.get(rssLink,{
+            var topicsRequests = [];
+            for(var i = 0; i < this.topics.length; i++){
+                console.log("topic : "+this.topics[i]);
+                topicsRequests.push(axios.get(this.store.CORSFIX+this.store.RSSDATABASE[this.topics[i]]));
+            }
+            axios.all(topicsRequests,{
                 headers: {
                 'Content-Type': 'application/json'
             }})
-            .then(response => {
+            .then(axios.spread((...responses) => {
                 //console.log(response.data);
-                this.parseFeedData(response.data);
+                for(var i = 0; i < responses.length; i++){
+                    var response = responses[i];
+                    this.parseFeedData(response.data,3,this.topics[i]);
+                }
                 this.loading = false;
                 this.success = true;
-            })
+            }))
             .catch(error => {
                 this.error = true;
                 this.errorMessage = error.message;
                 this.loading = false;
             });
         },
-        parseFeedData(data){
+        parseFeedData(data,num,topic){
             // Use a DocumentFragment to store and then mass inject a list of DOM nodes
             let doc = new DOMParser().parseFromString(data, 'text/html');
             //get og: properties
             let items = doc.querySelectorAll('item');
             //loop through each item and get the link
-            for(let i = 0; i < items.length; i++){
+            for(let i = 0; i < num; i++){
                 //console.log(items[i]);
                 let link = items[i].querySelector('link').textContent;
                 if(!link){
                     link = items[i].querySelector('guid').textContent;
                 }
                 //add link in feed
-                this.feed.push(link);
+                var article = {
+                    link: link,
+                    topic: topic
+                }
+                this.feed.push(article);
                 //console.log("link: ",link);
             }
             //set n if not -1

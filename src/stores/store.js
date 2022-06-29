@@ -11,14 +11,14 @@ export const useStore = defineStore('main', {
                 "Economie": ["https://www.francetvinfo.fr/economie.rss"],
                 "Culture": ["https://www.francetvinfo.fr/culture.rss"],
                 "Societe": ["https://www.francetvinfo.fr/societe.rss"], 
-                "Sport": [""],//? to find
-                "Cinema": [""],//? to find
-                "Lifestyle": [""],//? to find
-                "Actualites": [""],//? to find
-                "Evenements": [""],//? to find
-                "International": [""],//? to find
-                "Technologie": [""],//? to find
-                "Religion": [""], //? to find
+                // "Sport": [""],//? to find
+                // "Cinema": [""],//? to find
+                // "Lifestyle": [""],//? to find
+                // "Actualites": [""],//? to find
+                // "Evenements": [""],//? to find
+                // "International": [""],//? to find
+                // "Technologie": [""],//? to find
+                // "Religion": [""], //? to find
 
             },
             //get SavedTopics from local storage
@@ -45,6 +45,10 @@ export const useStore = defineStore('main', {
 
             //upadate local storage
             localStorage.setItem('SavedTopics', JSON.stringify(this.SavedTopics));
+        },
+        getTopicUnsaved()
+        {
+            return Object.keys(this.RSSDATABASE).filter(topic => !this.isTopicSaved(topic));
         }
       },
 })
