@@ -74,6 +74,7 @@ export default {
                     // console.log("Parsing for url: "+topicsRequests[i].url+" the topic is : "+topic);
                     this.parseFeedData(response.data,3,topic);
                 }
+                this.feed = this.store.sortArticles(this.feed);
                 // console.log(this.feed)
                 this.loading = false;
                 this.success = true;
@@ -101,7 +102,8 @@ export default {
                 //add link anda its related topic in feed
                 var article = {
                     link: link,
-                    topic: topic
+                    topic: topic,
+                    score: 0
                 }
                 this.feed.push(article);
             }

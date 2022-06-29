@@ -52,6 +52,21 @@ export const useStore = defineStore('main', {
         getTopicUnsaved()
         {
             return Object.keys(this.RSSDATABASE).filter(topic => !this.isTopicSaved(topic));
+        },
+        sortArticles(articles)
+        {
+
+            // articles = articles.sort((a,b) => {
+            //     return new Date(b.score) - new Date(a.score);
+            // });
+
+            //shuffle articles
+            for (let i = articles.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [articles[i], articles[j]] = [articles[j], articles[i]];
+            }
+            return articles;
+
         }
       },
 })
