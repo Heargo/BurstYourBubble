@@ -174,6 +174,9 @@ export default {
             //get url domain name
             let url = new URL(article.link);
             article.url = url.hostname;
+
+            //score article base on user's preferences
+            article.score = this.store.scoreArticle(article);
             
             return article;
         },

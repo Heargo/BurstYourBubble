@@ -31,6 +31,7 @@ export default {
     },
     methods: {
         openArticle(link){
+            this.store.updateProfile(this.article)
             window.open(link, '_blank');
         }
     }

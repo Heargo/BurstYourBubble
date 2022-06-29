@@ -31,6 +31,7 @@ export const useStore = defineStore('main', {
             feed: [],
             articleToFetch: 0,
             articleFetchedCounter:0,
+            userProfile: JSON.parse(localStorage.getItem('userProfile')) || {topics:{},keywords:[]},
         }
       },
       actions: {
@@ -66,36 +67,64 @@ export const useStore = defineStore('main', {
             if(this.articleFetchedCounter==this.articleToFetch)
             {
 
-                // //delete articles with same title or link
-                // var newArticles = [];
-                // for(var i = 0; i < this.feed.length; i++)
-                // {
-                //     var isDuplicate = false;
-                //     console.log("checking article " + i);
-                //     for(var j = 0; j < newArticles.length; j++)
-                //     {
-                //         if(this.feed[i].title == newArticles[j].title)
-                //         {
-                //             console.log("DUPLICATE",this.feed[i].title,newArticles[j].title);
-                //             isDuplicate++;
-                //             if(duplicate>1){
-                //                 isDuplicate =true;
-                //                 break;
-                //             }
-                //         }
-                //     }
-                //     if(!isDuplicate)
-                //         newArticles.push(this.feed[i]);
-                // }
-                // this.feed = newArticles;
-
-
                 //shuffle articles
                 this.feed.sort((a, b) => 0.5 - Math.random());
                 //sort by score
-                this.feed.sort((a, b) => b.score - a.score);
+                this.feed.sort((a, b) => a.score - b.score);
             }
 
+        },
+        /**
+         * Called when user click on a article. Allow to precise user profile and calculate scores
+         * @param {object} article 
+         */
+        updateProfile(article)
+        {
+            //increment score for the article topic
+            if(this.userProfile.topics[article.topic]){
+
+                console.log("increment score for the article topic");
+                this.userProfile.topics[article.topic]++;
+            }
+            else{
+                console.log("create new topic interest start");    
+                this.userProfile.topics[article.topic] = 1;
+            }
+
+            console.log("userProfile",this.userProfile);
+
+            //update local storage
+            console.log("userprofile topics ",this.userProfile.topics)
+            var stringify = JSON.stringify(this.userProfile);
+            localStorage.setItem('userProfile', stringify);
+            console.log("userProfile updated",stringify);
+        },
+        /**
+         * Score the article based on user profile (topics and keywords)
+         * @param {object} article 
+         * @returns 
+         */
+        scoreArticle(article)
+        {
+            //topic score
+            let score = 0;
+            if(Object.keys(this.userProfile.topics).includes(article.topic))
+                score += this.userProfile.topics[article.topic];
+            //title score
+            for(let word of article.title)
+            {
+                if(this.userProfile.keywords.includes(word))
+
+                    score += 1;
+            }
+            //description score
+            for(let word of article.description)
+            {
+                if(this.userProfile.keywords.includes(word))
+                    score += 0.5;
+            }
+
+            return score;
         }
       },
 })
