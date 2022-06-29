@@ -90,16 +90,10 @@ export const useStore = defineStore('main', {
                 // this.feed = newArticles;
 
 
-                // //shuffle articles
-                // for (let i = this.feed.length - 1; i > 0; i--) {
-                //     const j = Math.floor(Math.random() * (i + 1));
-                //     [this.feed[i], this.feed[j]] = [this.feed[j], this.feed[i]];
-                // }
-                // this.feed.sort((a, b) => 0.5 - Math.random());
-                // //sort by score
-                // this.feed = this.feed.sort((a,b) => {
-                //     return new Date(b.score) - new Date(a.score);
-                // });
+                //shuffle articles
+                this.feed.sort((a, b) => 0.5 - Math.random());
+                //sort by score
+                this.feed.sort((a, b) => b.score - a.score);
             }
 
         }

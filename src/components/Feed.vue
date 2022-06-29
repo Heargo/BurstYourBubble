@@ -3,7 +3,7 @@
         <div v-if="!loading && !error && store.articleFetchedCounter==store.articleToFetch" class="feed">
             <LinkPreview v-for="article in store.feed" :key="article" :article="article"></LinkPreview>
         </div>
-        <div v-else-if="loading">
+        <div v-else-if="loading || store.articleFetchedCounter!=store.articleToFetch">
             <p>Loading... </p>
         </div>
         <div v-else-if="error">
@@ -60,9 +60,7 @@ export default {
 
             //get all topics urls
             for(var i = 0; i < this.topics.length; i++){
-                console.log("topic : "+this.topics[i]);
                 this.store.RSSDATABASE[this.topics[i]].forEach(url => {
-                    console.log("url : "+url);
                     topicsRequests.push({request:axios.get(this.store.CORSFIX+url),topic:this.topics[i],url:url});
                 });
             }
@@ -109,37 +107,21 @@ export default {
             //get og: properties
             let items = doc.querySelectorAll('item');
             //loop through each item and get the link
-            for(let i = 0; i < num; i++){
+            for(var i = 0; i < num; i++){
                 //get link to the article
                 let link = items[i].querySelector('link').textContent;
                 if(!link){link = items[i].querySelector('guid').textContent} //sometimes the link is not in the link tag, but in the guid tag
                 
-                //init article
-                var article = {
-                    link: link,
-                    topic: topic,
-                    image:null,
-                    title:null,
-                    description:null,
-                    source:null,
-                    score: 0
-                }
-
                 //fetch data from the article then add it to the feed
-                axios.get(this.store.CORSFIX+article.link,{
+                axios.get(this.store.CORSFIX+link,{
                     headers: {
                     'Content-Type': 'application/json'
                 }})
                 .then(response => {
                     var data = response.data;
-                    article = this.parseOgData(data,article);
+                    var article = this.parseOgData(data,topic,link);
                     //add to feed
                     this.store.feed.push(article);
-                    if(article.title!=this.store.feed[this.store.feed.length-1].title){
-                        console.log("article added to feed",article.title);
-                        console.log("in feed at postion : "+this.store.feed[this.store.feed.length-1].title);
-                    }
-                    console.log(this.store.feed[this.store.feed.length-1].title)
                     this.store.articleFetchedCounter++;
                     this.store.sortArticles();
 
@@ -157,7 +139,17 @@ export default {
          * @param {*} data data from the article
          * @param {*} article article object
          */
-        parseOgData(data,article){
+        parseOgData(data,topic,link){
+            //init article
+            var article = {
+                link: link,
+                topic: topic,
+                image:null,
+                title:null,
+                description:null,
+                source:null,
+                score: 0
+            }
             // Use a DocumentFragment to store and then mass inject a list of DOM nodes
             let doc = new DOMParser().parseFromString(data, 'text/html');
             //get og: properties
