@@ -36,6 +36,9 @@ export const useStore = defineStore('main', {
         {
             return this.SavedTopics.includes(topic);            
         },
+        getSavedTopics(){
+            return this.SavedTopics;
+        },
         toggleTopic(topic)
         {   
             if(this.isTopicSaved(topic))

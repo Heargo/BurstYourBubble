@@ -38,7 +38,7 @@ export default {
   methods: {
     redirect(route){
       //if there is no interess saved in store, redirect to interess page
-      if(this.store.getTopics().length==0){
+      if(this.store.getSavedTopics().length==0){
         this.$router.push(route)
       }
       //else redirect to feed page since user already started the app
@@ -131,6 +131,7 @@ export default {
       color:$color_bg;
       outline:none;
       border:none;
+      cursor: pointer;
 
       @include width-under(600px) {
         position: inherit;
