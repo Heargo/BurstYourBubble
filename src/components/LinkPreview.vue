@@ -1,38 +1,27 @@
 <template>
-    <div class="container" @click="openArticle(link)">
-        <div v-if="success && !error" class="card">
-            <img :src="image" alt="preview">
+    <div class="container" >
+        <div @click="openArticle(article.link)" class="card">
+            <img :src="article.image" alt="preview">
             <div class="content">
                 <div class="label">
-                    <p class="topic">{{topic}}</p>
-                    <p class="source">{{source}}</p>
+                    <p class="topic">{{article.topic}}</p>
+                    <p class="source">{{article.source}}</p>
                 </div>
-                <h3>{{title}}</h3>
+                <h3>{{article.title}}</h3>
             </div>
 
-        </div>
-        <div v-else-if="loading">
-            <p>Loading...</p>
-        </div>
-        <div v-else-if="error">
-            <p>erreur : {{error}}</p>
         </div>
     </div>
 </template>
 <script>
-import axios from 'axios'
 import { useStore } from '@/stores/store'
 export default {
     name:"LinkPreview",
     props: {
-        link: {
-            type: String,
+        article: {
+            type: Object,
             required: true
         },
-        topic: {
-            type: String,
-            required: true
-        }
     },
     setup() {
         const store = useStore()
@@ -40,75 +29,7 @@ export default {
         store,
         }
     },
-    data(){
-        return {
-            title: "Titre",
-            description: "description",
-            source:"internet",
-            image: "",
-            url: "",
-            loading: false,
-            error: false,
-            errorMessage: "",
-            success: false,
-        }
-    },
-    mounted(){
-       this.getLinkPreview(this.link)
-    },
-    watch: {
-        link: function(newVal){
-            this.getLinkPreview(newVal)
-        }
-    },
     methods: {
-        getLinkPreview(){
-            this.loading = true;
-            this.error = false;
-            this.success = false;
-            this.errorMessage = "";
-            this.getLinkPreviewData();
-        },
-        getLinkPreviewData(){
-            axios.get(this.link,{
-                headers: {
-                'Content-Type': 'application/json'
-            }})
-            .then(response => {
-                this.parseLinkPreviewData(response.data);
-                this.loading = false;
-                this.success = true;
-            })
-            .catch(error => {
-                this.loading = false;
-                this.error = true;
-                this.errorMessage = error.response.data.message;
-            });
-        },
-        parseLinkPreviewData(data){
-            // Use a DocumentFragment to store and then mass inject a list of DOM nodes
-            let doc = new DOMParser().parseFromString(data, 'text/html');
-            //get og: properties
-            let metas = doc.querySelectorAll('meta');
-            metas.forEach(meta => {
-                if(meta.getAttribute('property') == "og:title"){
-                    this.title = meta.getAttribute('content');
-                }
-                if(meta.getAttribute('property') == "og:description"){
-                    this.description = meta.getAttribute('content');
-                }
-                if(meta.getAttribute('property') == "og:image"){
-                    this.image = meta.getAttribute('content');
-                }
-                //source
-                if(meta.getAttribute('property') == "og:site_name"){
-                    this.source = meta.getAttribute('content');
-                }
-            });
-            //get url domain name
-            let url = new URL(this.link);
-            this.url = url.hostname;
-        },
         openArticle(link){
             window.open(link, '_blank');
         }

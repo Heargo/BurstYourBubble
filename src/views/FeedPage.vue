@@ -7,14 +7,12 @@
 
 <script>
 // @ is an alias to /src
-// import LinkPreview from '@/components/LinkPreview.vue'
 import Feed from '@/components/Feed.vue'
 import { useStore } from '@/stores/store'
 
 export default {
   name: 'FeedPage',
   components: {
-    // LinkPreview,
     Feed
   },
   setup() {
