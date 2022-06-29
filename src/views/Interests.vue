@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <h1>Choisissez vos centre d'intêrets</h1>
-        <img class="interessImg" src="@/assets/svg/undraw_exciting_news_re_y1iw.svg" alt="interess">
-        <div class="interess">
+        <img class="interestsImg" src="@/assets/svg/undraw_exciting_news_re_y1iw.svg" alt="interests">
+        <div class="interests">
             <p v-for="i in store.getTopics()" :key="i" :class="{selected:store.isTopicSaved(i),noselect:true}" @click="store.toggleTopic(i)">{{i}}</p>
         </div>
         <button @click="deleteSelected">J'ai terminé</button>
@@ -12,7 +12,7 @@
 import { useStore } from '@/stores/store'
 
 export default {
-    name:'Interess',
+    name:'interests',
     setup() {
         const store = useStore()
         return {
@@ -45,14 +45,14 @@ export default {
         align-items: center;
         justify-content: center;
     }
-    .interessImg{
+    .interestsImg{
         height: 30vh;
         width: auto;
         @include width-under(600px){
             margin-bottom: 1rem;
         }   
     }
-    .interess{
+    .interests{
         display: flex;
         align-items: center;
         align-content: center;

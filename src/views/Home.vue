@@ -2,7 +2,7 @@
   <div class="home">
     <div class="bubbleRelative">
       <h1>Éclate ta bulle !</h1>
-      <button @click="redirect('interess')" class="bubble">ICI</button>
+      <button @click="redirect('interests')" class="bubble">ICI</button>
     </div>
     <div class="argument">
       <img src="@/assets/svg/undraw_launching_re_tomg.svg" alt="explore">
@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     redirect(route){
-      //if there is no interess saved in store, redirect to interess page
+      //if there is no interests saved in store, redirect to interests page
       if(this.store.getSavedTopics().length==0){
         this.$router.push(route)
       }
