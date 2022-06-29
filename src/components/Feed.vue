@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="!loading && !error" class="feed">
+        <div v-if="!loading && !error && store.articleFetchedCounter==store.articleToFetch" class="feed">
             <LinkPreview v-for="article in store.feed" :key="article" :article="article"></LinkPreview>
         </div>
         <div v-else-if="loading">
@@ -126,7 +126,7 @@ export default {
                 }
 
                 //fetch data from the article then add it to the feed
-                axios.get(article.link,{
+                axios.get(this.store.CORSFIX+article.link,{
                     headers: {
                     'Content-Type': 'application/json'
                 }})
@@ -135,6 +135,11 @@ export default {
                     article = this.parseOgData(data,article);
                     //add to feed
                     this.store.feed.push(article);
+                    if(article.title!=this.store.feed[this.store.feed.length-1].title){
+                        console.log("article added to feed",article.title);
+                        console.log("in feed at postion : "+this.store.feed[this.store.feed.length-1].title);
+                    }
+                    console.log(this.store.feed[this.store.feed.length-1].title)
                     this.store.articleFetchedCounter++;
                     this.store.sortArticles();
 
