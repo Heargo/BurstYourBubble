@@ -9,7 +9,7 @@ const pathSrc = path.resolve(__dirname, "./src");
 export default defineConfig({
   plugins: [
     vue(),
-    VitePWA({})
+    VitePWA({registerType:'autoUpdate'})
   ],
   resolve: {
     alias: {
