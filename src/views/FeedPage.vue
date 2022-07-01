@@ -51,4 +51,6 @@ export default {
   .feedContainer{
     margin-top: 4rem;
   }
+
+  
 </style>

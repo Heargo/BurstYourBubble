@@ -3,11 +3,11 @@
         <div v-if="!loading && !error && store.articleFetchedCounter>=store.articleToFetch" class="feed">
             <LinkPreview v-for="article in store.feed" :key="article" :article="article"></LinkPreview>
         </div>
-        <div v-else-if="store.articleFetchedCounter<store.articleToFetch">
-            <p>Loading... </p>
+        <div v-else-if="!error && store.articleFetchedCounter<store.articleToFetch">
+            <div id="nest5"></div>
         </div>
-        <div v-else-if="error">
-            <p>erreur : {{error}}</p>
+        <div v-else-if="error" class="center">
+            <img src="@/assets/svg/undraw_warning_re_eoyh.svg" alt="">
         </div>
     </div>
 </template>
@@ -190,4 +190,83 @@ export default {
         align-items: center;
         justify-content: center;
     }
+    .center{
+        img{
+            width: 80%;
+            max-width: 600px;
+            transform: translateY(20vh);
+        }
+    }
+
+    /**===== nest5 =====*/
+    $borderSize:4px;
+    $borderRadius:100px;
+    #nest5 {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        height: 100px;
+        width: 100px;
+        margin: -25px 0 0 -25px;
+        border: $borderSize solid transparent;
+        border-top-color: $color_callToAction;
+        border-radius: $borderRadius;
+        -webkit-animation: spin11 2s linear infinite;
+                animation: spin11 2s linear infinite;
+    }
+
+    #nest5:before {
+        content: "";
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        bottom: 7px;
+        left: 7px;
+        border: $borderSize solid transparent;
+        border-radius: $borderRadius;
+        border-top-color: $color_txt2;
+        -webkit-animation: spin11 3s linear infinite;
+                animation: spin11 3s linear infinite;
+    }
+
+    #nest5:after {
+        content: "";
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        bottom: 15px;
+        left: 15px;
+        border: $borderSize solid transparent;
+        border-radius: $borderRadius;
+        border-top-color: $color_txt;
+        -webkit-animation: spin11 1.5s linear infinite;
+                animation: spin11 1.5s linear infinite;
+    }
+
+    @-webkit-keyframes spin11 {
+        from {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+        }
+        to {
+        -webkit-transform: rotate(359deg);
+                transform: rotate(359deg);
+        }
+    }
+    @keyframes spin11 {
+        from {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+        }
+        to {
+        -webkit-transform: rotate(359deg);
+                transform: rotate(359deg);
+        -webkit-transform: rotate(359deg);
+                transform: rotate(359deg);
+        }
+    }
+    /** END of nest5*/
 </style>
