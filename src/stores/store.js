@@ -35,6 +35,7 @@ export const useStore = defineStore('main', {
             articleFetchedCounter:0,
             userProfile: JSON.parse(localStorage.getItem('userProfile')) || {topics:{},keywords:{}},
             username: localStorage.getItem('username') || 'Username',
+            userIsSetup: localStorage.getItem('userIsSetup') || false,
         }
       },
       actions: {
@@ -64,6 +65,11 @@ export const useStore = defineStore('main', {
         getTopicUnsaved()
         {
             return Object.keys(this.RSSDATABASE).filter(topic => !this.isTopicSaved(topic));
+        },
+        setUserSetup(bool)
+        {
+            this.userIsSetup = bool;
+            localStorage.setItem('userIsSetup', bool);
         },
         sortArticles()
         {

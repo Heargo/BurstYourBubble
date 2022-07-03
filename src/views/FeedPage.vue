@@ -1,6 +1,6 @@
 <template>
   <div class="top">
-    <h1>Ma <span>bulle<img class="cross" src="@/assets/svg/cross.svg" alt=""></span></h1>
+    <h1>Rester <span>curieux</span>...</h1>
     <Feed class="feedContainer"></Feed>
   </div>
 </template>
@@ -39,13 +39,25 @@ export default {
     padding-top: 1.5rem;
     padding-bottom: 0.5rem;
     span{
-      position:relative;
-      img{
+      position: relative;
+      // color: $white;
+
+      &::after{
+        content: "";
         position: absolute;
-        top:-240px;
-        right:-225px;
-        transform: scale(0.12);
+        bottom: 0.5rem;
+        left: 0;
+        width: 100%;
+        height: 1rem;
+        background-color: $color_callToAction2;
+        z-index: -1;
       }
+      // img{
+      //   position: absolute;
+      //   top:-240px;
+      //   right:-225px;
+      //   transform: scale(0.12);
+      // }
     }
   }
   .feedContainer{

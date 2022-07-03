@@ -5,7 +5,7 @@
         <div class="interests">
             <p v-for="i in store.getTopics()" :key="i" :class="{selected:store.isTopicSaved(i),noselect:true}" @click="store.toggleTopic(i)">{{i}}</p>
         </div>
-        <button @click="deleteSelected">J'ai terminé</button>
+        <button @click="deleteSelected" v-if="store.SavedTopics.length>0">J'ai terminé</button>
     </div>
 </template>
 <script>
@@ -21,18 +21,24 @@ export default {
     },
     methods: {
         deleteSelected(){
+            //prevent empty favorites
+            var selections = document.querySelectorAll('.selected');
+            if(selections.length ==0){ return;}
+
             //get all dom element with class selected
-            document.querySelectorAll('.selected').forEach(function(e){
+            selections.forEach(function(e){
                 e.classList.add('deleteAnimation')
                 //wait 0.8s before deleting the element
                 setTimeout(function(){
-                    e.remove()
+                    e.remove();
                 },800)
             })
             //wait 2s before redirecting to the home page
             var router =this.$router;
+            var st = this.store;
             setTimeout(function(){
-                router.push('/feed')
+                st.setUserSetup(true);
+                router.push('/feed');
             },2000)
         }
     }

@@ -1,10 +1,10 @@
 <template>
     <div>
         <div v-if="!loading && !error && store.articleFetchedCounter>=store.articleToFetch" class="feed">
-            <LinkPreview v-for="article in store.feed" :key="article" :article="article"></LinkPreview>
+            <ArticlePreview v-for="article in store.feed" :key="article" :article="article"></ArticlePreview>
         </div>
         <div v-else-if="!error && store.articleFetchedCounter<store.articleToFetch">
-            <div id="nest5"></div>
+            <div id="loader"></div>
         </div>
         <div v-else-if="error" class="center">
             <img src="@/assets/svg/undraw_warning_re_eoyh.svg" alt="">
@@ -14,12 +14,12 @@
 
 <script>
 import axios from 'axios'
-import LinkPreview from './LinkPreview.vue'
+import ArticlePreview from './ArticlePreview.vue'
 import { useStore } from '@/stores/store'
 export default {
     name: "Feed",
     components: {
-        LinkPreview
+        ArticlePreview
     },
     setup() {
         const store = useStore()
@@ -78,10 +78,6 @@ export default {
                     //add numArticlePerFlux articles per rss flux to feed
                     this.parseFeedData(response.data,numArticlePerFlux,topic);
                 }
-
-                // // this.store.addUncategorizedArticles(this.feed);
-                // this.store.sortArticles();
-
                 //loading finished and no error
                 this.loading = false;
                 this.success = true;
@@ -121,12 +117,14 @@ export default {
                     //add to feed
                     this.store.feed.push(article);
                     this.store.articleFetchedCounter++;
+                    //attempt to sort the feed
                     this.store.sortArticles();
 
                 })
                 .catch(error => {
                     console.log(error);
                     this.store.articleFetchedCounter++;
+                    //attempt to sort the feed
                     this.store.sortArticles();
                 });
                 
@@ -201,7 +199,7 @@ export default {
     /**===== nest5 =====*/
     $borderSize:4px;
     $borderRadius:100px;
-    #nest5 {
+    #loader {
         display: block;
         position: absolute;
         top: 50%;
@@ -216,7 +214,7 @@ export default {
                 animation: spin11 2s linear infinite;
     }
 
-    #nest5:before {
+    #loader:before {
         content: "";
         position: absolute;
         top: 7px;
@@ -230,7 +228,7 @@ export default {
                 animation: spin11 3s linear infinite;
     }
 
-    #nest5:after {
+    #loader:after {
         content: "";
         position: absolute;
         top: 15px;

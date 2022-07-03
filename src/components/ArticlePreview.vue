@@ -9,14 +9,13 @@
                 </div>
                 <h3>{{article.title}}</h3>
             </div>
-
         </div>
     </div>
 </template>
 <script>
 import { useStore } from '@/stores/store'
 export default {
-    name:"LinkPreview",
+    name:"ArticlePreview",
     props: {
         article: {
             type: Object,
