@@ -208,7 +208,6 @@ export default {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin-bottom: 70px;
     }
     #feedContainer{
         position: relative;

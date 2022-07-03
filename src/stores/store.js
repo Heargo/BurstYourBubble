@@ -164,10 +164,10 @@ export const useStore = defineStore('main', {
                 return_changed_case:true,
                 remove_duplicates: false
             });
-            //remove -, _, . , / , ( , ) , [ , ] , { , }, «, »
-            keywords = keywords.map(keyword => keyword.replace(/[-_.,\/()\[\]{}«»]/g, ""));
+            //remove  _, . , / , ( , ) , [ , ] , { , }, «, »
+            keywords = keywords.map(keyword => keyword.replace(/[_.,\/()\[\]{}«»]/g, ""));
             //remove empty keywords
-            keywords = keywords.filter(keyword => keyword.length>0);
+            keywords = keywords.filter(keyword => keyword.length>1);
             //increment score for each keyword if they exist in the user profile else create it
             keywords.forEach(keyword => {
                 if(Object.keys(this.userProfile.keywords).includes(keyword)){
@@ -177,6 +177,21 @@ export const useStore = defineStore('main', {
                     this.userProfile.keywords[keyword] = 1;
                 }
             });
+        },
+        getUserNewInterestsTopics(){
+            var res = Object.keys(this.userProfile.topics).filter(topic => this.userProfile.topics[topic]>=1);
+            //sort by score
+            res.sort((a, b) => this.userProfile.topics[b] - this.userProfile.topics[a]);
+            //get the first 10 topics
+            return res.slice(0,10);
+
+        },
+        getUserNewInterestsKeywords(){
+            var res =Object.keys(this.userProfile.keywords).filter(keyword => this.userProfile.keywords[keyword]>1);
+            //sort by score
+            res.sort((a, b) => this.userProfile.keywords[b] - this.userProfile.keywords[a]);
+            //get the first 40 keywords
+            return res.slice(0,40);
         }
       },
 })
