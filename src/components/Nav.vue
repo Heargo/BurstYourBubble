@@ -1,5 +1,5 @@
 <template>
-    <div class="navContainer" v-if="store.userIsSetup">
+    <div id="Nav" class="navContainer" v-if="store.userIsSetup">
         <router-link class="navItem" to="feed">
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><title>Newspaper</title><path d="M368 415.86V72a24.07 24.07 0 00-24-24H72a24.07 24.07 0 00-24 24v352a40.12 40.12 0 0040 40h328" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M416 464h0a48 48 0 01-48-48V128h72a24 24 0 0124 24v264a48 48 0 01-48 48z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M240 128h64M240 192h64M112 256h192M112 320h192M112 384h192"/><path d="M176 208h-64a16 16 0 01-16-16v-64a16 16 0 0116-16h64a16 16 0 0116 16v64a16 16 0 01-16 16z"/></svg>
@@ -23,8 +23,9 @@ export default {
     name: 'Nav',
     setup() {
         const store = useStore()
+
         return {
-        store,
+            store,
         }
     },
 }
@@ -44,12 +45,12 @@ export default {
         margin:1rem 0;
         width: fit-content;
         background-color: $color_bg;
+        z-index: 3;
         @include width-under(1050px){
             flex-direction: row;
             left:calc(50% - $size * 3);
             bottom: 0rem;
             top:initial;
-            z-index: 3;
             height: fit-content;
         }
         .navItem{

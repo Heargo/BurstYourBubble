@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="feedContainer">
         <div v-if="!loading && !error && store.articleFetchedCounter>=store.articleToFetch" class="feed">
             <ArticlePreview v-for="article in store.feed" :key="article" :article="article"></ArticlePreview>
         </div>
@@ -27,9 +27,30 @@ export default {
         store,
         }
     },
+    props: {
+        numOfArticles: {
+            type: Number,
+            default: -1
+        }
+    },
     mounted(){
-        //get feed when component is created
-        this.getFeed();
+
+        //get feed when the feed is not fetched yet
+        if(this.store.feed.length==0){
+            console.log("fetching feed")
+            this.getFeed()
+        }
+        //if there is a feed but there is not a specif ic number of articles,  refresh it
+        else if(this.numOfArticles==-1){
+            console.log("refreshing feed")
+            this.getFeed()
+        }
+        //num of articles is specified, so we crop the feed to that number
+        else{
+            console.log("cropping feed")
+            this.store.feed = this.store.feed.slice(0, this.numOfArticles)
+        }
+        
     },
     data(){
         return {
@@ -118,14 +139,14 @@ export default {
                     this.store.feed.push(article);
                     this.store.articleFetchedCounter++;
                     //attempt to sort the feed
-                    this.store.sortArticles();
+                    this.store.sortArticles(this.numOfArticles);
 
                 })
                 .catch(error => {
                     console.log(error);
                     this.store.articleFetchedCounter++;
                     //attempt to sort the feed
-                    this.store.sortArticles();
+                    this.store.sortArticles(this.numOfArticles);
                 });
                 
             }
@@ -187,6 +208,10 @@ export default {
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        margin-bottom: 70px;
+    }
+    #feedContainer{
+        position: relative;
     }
     .center{
         img{
@@ -202,7 +227,7 @@ export default {
     #loader {
         display: block;
         position: absolute;
-        top: 50%;
+        top: calc(50vh - 100px);
         left: 50%;
         height: 100px;
         width: 100px;

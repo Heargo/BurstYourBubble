@@ -7,8 +7,8 @@ import keyword_extractor from 'keyword-extractor'
 export const useStore = defineStore('main', {
     state: () => {
         return {
-            CORSFIX: 'https://cors-proxy-heargo.herokuapp.com/',
-            // CORSFIX: '',
+            // CORSFIX: 'https://cors-proxy-heargo.herokuapp.com/',
+            CORSFIX: '',
             RSSDATABASE:{
                 "Politique": ["https://www.francetvinfo.fr/politique.rss","https://www.europe1.fr/rss/politique.xml","https://www.01net.com/actualites/politique-droits/feed/"],
                 "Economie": ["https://www.francetvinfo.fr/economie.rss","https://www.europe1.fr/rss/economie.xml"],
@@ -33,9 +33,13 @@ export const useStore = defineStore('main', {
             feed: [],
             articleToFetch: 0,
             articleFetchedCounter:0,
-            userProfile: JSON.parse(localStorage.getItem('userProfile')) || {topics:{},keywords:{}},
-            username: localStorage.getItem('username') || 'Username',
+            userProfile: JSON.parse(localStorage.getItem('userProfile')) || {topics:{},keywords:{},profilePicture:"chat.png",username:"Username"},
             userIsSetup: localStorage.getItem('userIsSetup') || false,
+            profilesIgm:[
+                "antilope.png","baleine.png","berger-allemand.png","chat.png","chauve-souris.png",
+                "dragon.png","herisson.png","lelephant.png","perroquet.png","poulpe.png","rauque.png",
+                "renard.png","renne.png","serpent.png","singe.png","souris.png","taureau.png","vache.png"
+                ],
         }
       },
       actions: {
@@ -70,8 +74,10 @@ export const useStore = defineStore('main', {
         {
             this.userIsSetup = bool;
             localStorage.setItem('userIsSetup', bool);
+            //save user profile
+            localStorage.setItem('userProfile', JSON.stringify(this.userProfile));
         },
-        sortArticles()
+        sortArticles(numOfArticles)
         {
             if(this.articleFetchedCounter==this.articleToFetch)
             {
@@ -80,8 +86,24 @@ export const useStore = defineStore('main', {
                 this.feed.sort((a, b) => 0.5 - Math.random());
                 //sort by score
                 this.feed.sort((a, b) => a.score - b.score);
+                
+                if (numOfArticles>0){
+                    console.log("get first "+numOfArticles+" articles");
+                    //get the first numOfArticles articles
+                    this.feed = this.feed.slice(0,numOfArticles);
+                }
             }
 
+        },
+        updateProfileDecoration(name,img)
+        {
+            if (img!=null){
+                this.userProfile.profilePicture = img;
+            }
+            if(name!=null){
+                this.userProfile.username = name;
+            }
+            localStorage.setItem('userProfile', JSON.stringify(this.userProfile));
         },
         /**
          * Called when user click on a article. Allow to precise user profile and calculate scores

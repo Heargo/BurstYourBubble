@@ -2,27 +2,51 @@
     <div class="container">
         <div class="left">
             <div class="profilCustom">
-                <img src="https://images.unsplash.com/photo-1502307100811-6bdc0981a85b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=378&q=80" alt="">
-                <input type="text" v-model="username">
+                <img :src="getImageUrl(pp)" alt="">
+                <input type="text" v-model="username" placeholder="Username">
+            </div>
+            <div class="myBubble">
+                <h2>Ma bulle</h2>
+                <p v-for="topic in store.getSavedTopics()" :key="topic" >{{topic}}</p>
             </div>
         </div>
         <div class="right">
-
+            <h2>Je découvre...</h2>
+            <Feed class="feedContainer" :numOfArticles="3"></Feed>
         </div>
     </div>
 </template>
 <script>
 import { useStore } from '@/stores/store'
+import Feed from '@/components/Feed.vue'
 export default {
     name: 'Profile',
-    data()
-    {
-
+    components: {
+        Feed
+    },
+    data() {
+        return {
+            username: this.store.userProfile.username,
+            pp: this.store.userProfile.profilePicture,
+        }
+    },
+    watch: {
+        username: function(newValue) {
+            console.log(newValue)
+            this.store.updateProfileDecoration(newValue,null)
+        },
+        pp: function(newValue) {
+            this.store.updateProfileDecoration(null,newValue)
+        }
     },
     setup() {
-        const store = useStore()
+        const store = useStore();
+        const getImageUrl = (name) => {
+            return new URL(`../assets/profile/${name}`, import.meta.url).href
+        }
         return {
             store,
+            getImageUrl,
         }
     }
 }
@@ -30,10 +54,76 @@ export default {
 <style lang="scss" scoped>
     .container{
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         justify-content: center;
         height: calc(100vh - 2px);
-        border:solid 1px red;
+        .left{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            // border:solid 2px red;
+            .profilCustom{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                height: 50%;
+                width: 100%;
+                // border:solid 2px green;
+                img{
+                    width:100px;
+                    height:100px;
+                    border-radius:50%;
+                    object-fit: cover;
+                    margin-right: 2rem;
+                }
+                input{
+                    border: none;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    color: $color_txt;
+                }
+            }
+            .myBubble{
+                height: 100%;
+                width: 100%;
+                // border:solid 2px blue;
+            }
+
+        }
+        .right{
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            .feedContainer{
+                height: 100%;
+                overflow: auto;            
+            }
+        }
+    }
+    /* ===== Scrollbar CSS ===== */
+    /* Firefox */
+    * {
+        scrollbar-width: auto;
+        scrollbar-color: $color_txt #ffffff;
+    }
+
+    /* Chrome, Edge, and Safari */
+    *::-webkit-scrollbar {
+        width: 16px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: #ffffff;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: $color_txt;
+        border-radius: 10px;
+        border: 3px solid #ffffff;
     }
 </style>

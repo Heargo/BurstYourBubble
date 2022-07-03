@@ -22,6 +22,8 @@ export default {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    padding-bottom: 90px ;
+    @include width-under(1050px){
+      padding-bottom: 90px ;
+    }
 }
 </style>

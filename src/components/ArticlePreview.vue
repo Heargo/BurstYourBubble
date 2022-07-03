@@ -66,13 +66,16 @@ export default {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            align-items: center; 
+            align-items: flex-start; 
             width: 100%;
             background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 1) 100%);
             color:$white;
             border-radius: 20px;
             h3{
                 width: calc(100% - 1.5rem);
+                @include width-over(1050px){
+                     width: calc(100% - 1.5rem - 80px);
+                }
                 font-family: 'Poppins', sans-serif;
                 font-size: 1.3rem;
                 text-align: left;
