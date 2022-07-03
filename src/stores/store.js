@@ -7,8 +7,8 @@ import keyword_extractor from 'keyword-extractor'
 export const useStore = defineStore('main', {
     state: () => {
         return {
-            // CORSFIX: 'https://cors-proxy-heargo.herokuapp.com/',
-            CORSFIX: '',
+            CORSFIX: 'https://cors-proxy-heargo.herokuapp.com/',
+            // CORSFIX: '',
             RSSDATABASE:{
                 "Politique": ["https://www.francetvinfo.fr/politique.rss","https://www.europe1.fr/rss/politique.xml","https://www.01net.com/actualites/politique-droits/feed/"],
                 "Economie": ["https://www.francetvinfo.fr/economie.rss","https://www.europe1.fr/rss/economie.xml"],
