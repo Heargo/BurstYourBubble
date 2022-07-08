@@ -1,14 +1,15 @@
 import { defineStore } from 'pinia'
 //  include the Keyword Extractor
 import keyword_extractor from 'keyword-extractor'
+// import.meta.env.VITE_CORSFIX
 
-// useStore could be anything like useUser, useCart
+
+// useStore could be anything like useUser, useCart 
 // the first argument is a unique id of the store across your application
 export const useStore = defineStore('main', {
     state: () => {
         return {
-            CORSFIX: 'https://cors-proxy-heargo.herokuapp.com/',
-            // CORSFIX: '',
+            CORSFIX: import.meta.env.VITE_CORSFIX,
             RSSDATABASE:{
                 "Politique": ["https://www.francetvinfo.fr/politique.rss","https://www.europe1.fr/rss/politique.xml","https://www.01net.com/actualites/politique-droits/feed/"],
                 "Economie": ["https://www.francetvinfo.fr/economie.rss","https://www.europe1.fr/rss/economie.xml"],
