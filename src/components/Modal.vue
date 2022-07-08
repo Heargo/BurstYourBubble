@@ -2,7 +2,7 @@
 <div class="center">
   <div class="container">
     <h3>Personnalisez votre avatar</h3>
-      <img src="@/assets/svg/cross.svg" alt="close" class="close" @click="close()">
+      <img src="@/assets/svg/close-outline.svg" alt="close" class="close" @click="close()">
       <div class="scroll">
         <div class="allpreview">
           <img

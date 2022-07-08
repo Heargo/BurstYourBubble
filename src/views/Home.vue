@@ -14,6 +14,10 @@
           </p>
       </div>
     </div>
+    <div class="warning" v-if="showWarning">
+      <p>Les articles présents sur ce site ne proviennent pas de sources suffisamment variées pour être réellement utilisé. De plus, la qualité des articles n'est pas vérifiée. Pour participer et proposer des nouvelles sources rendez-vous <a href="">sur le github</a></p>
+      <img src="@/assets/svg/close-outline.svg" alt="close" @click="showWarning=false">
+    </div>
   </div>
 </template>
 
@@ -26,7 +30,8 @@ export default {
   name: 'Home',
   data() {
     return {
-      link:""
+      link:"",
+      showWarning: true,
     }
   },
   setup() {
@@ -70,6 +75,26 @@ export default {
     @include width-under(1000px){
       font-size: 3rem;
     }
+  }
+  .warning{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    background-color:$red;
+    font-weight: bold;
+    
+    a{
+      color:$white;
+      text-decoration:underline;
+    }
+
+      img{
+        $size_img:30px;
+        width:$size_img;
+        height:$size_img;
+        cursor: pointer;
+      }
   }
   .argument{
     width: 100vw;
