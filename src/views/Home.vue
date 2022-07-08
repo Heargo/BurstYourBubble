@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="warning" v-if="showWarning">
-      <p>Les articles présents sur ce site ne proviennent pas de sources suffisamment variées pour être réellement utilisé. De plus, la qualité des articles n'est pas vérifiée. Pour participer et proposer des nouvelles sources rendez-vous <a href="">sur le github</a></p>
+      <p>Les articles présents sur ce site ne proviennent pas de sources suffisamment variées pour être réellement utilisé. De plus, la qualité des articles n'est pas vérifiée. Pour participer et proposer des nouvelles sources rendez-vous <a href="https://github.com/Heargo/BurstYourBubble">sur le github</a></p>
       <img src="@/assets/svg/close-outline.svg" alt="close" @click="showWarning=false">
     </div>
   </div>
