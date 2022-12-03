@@ -77,9 +77,12 @@ export default {
             var numArticlePerFlux = 2;
 
             //get all topics urls
+            console.log("corsfix is", this.store.CORSFIX)
+            
             var topics= this.store.getTopicUnsaved();
             for(var i = 0; i < topics.length; i++){
                 this.store.RSSDATABASE[topics[i]].forEach(url => {
+                    console.log("url is ", this.store.CORSFIX+url)
                     topicsRequests.push({request:axios.get(this.store.CORSFIX+url),topic:topics[i],url:url});
                 });
             }
